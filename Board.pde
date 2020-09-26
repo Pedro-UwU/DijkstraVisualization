@@ -8,6 +8,9 @@ class Board {
     boardHeight = h;
     reset();
   }
+  
+  int getWidth() {return boardWidth;}
+  int getHeight(){return boardHeight;}
 
   void show(PGraphics canvas) {
     float sclX = 1.0*width/boardWidth;
@@ -127,5 +130,12 @@ class Board {
     } else {
       board.set(x, y, -1);
     }
+  }
+  
+  public Node getNode(int x, int y) {
+    if (y >= 0 && y < boardHeight && x >= 0 && x < boardWidth) {
+      return nodes[y][x];
+    }
+    return null;
   }
 }

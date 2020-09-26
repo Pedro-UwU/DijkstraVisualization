@@ -14,17 +14,30 @@ class Node {
     float spacingY = sclY/30;
     canvas.beginDraw();
     switch (value) {
-    case -1: 
+    case -1: //Wall
       canvas.fill(20);
       break;
-    case 0: 
+    case 0: //Nothing
       canvas.fill(200);
       break;
-    case 1: 
+    case 1: //Current
+      canvas.fill(color(200, 0, 100));
+      break;
+    case 2: //Neighbor
       canvas.fill(100);
       break;
-    case 2: 
+    case 3: //Visited
       canvas.fill(150);
+      break;
+    case 4: //Start
+      canvas.fill(0, 200, 0);
+      break;
+    case 5: //End
+      canvas.fill(200, 0, 0);
+      break;
+      
+    case 6: //Path
+      canvas.fill(0, 150, 176);
       break;
     default: 
       canvas.fill(255);
@@ -57,7 +70,7 @@ class Node {
   public void setValue(int v) {
     value = v;
   }
-  
+
   public void resetNeighbors() {
     for (int i = 0; i < 4; i++) {
       neighbors[i] = null;
@@ -113,5 +126,20 @@ class Node {
   @Override
     public String toString() {
     return "Node -> X: " + x + ", Y: " + y + ", VALUE: " + value;
+  }
+
+  @Override
+    public int hashCode() {
+    return y * BOARD_W + x;
+  }
+
+  @Override
+    public boolean equals(Object o) {
+    if (o == this) return true;
+    if (o.getClass() != this.getClass()) return false;
+
+    Node n = (Node) o;
+    if (n.getX() == x && n.getY() == y) return true;
+    return false;
   }
 }
