@@ -10,6 +10,7 @@ void setup() {
 
 
 void draw() {
+  background(255);
   board.show(this.getGraphics());
 }
 

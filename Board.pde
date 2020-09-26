@@ -29,6 +29,9 @@ class Board {
         for (Node n : nodes[y][x].getNeighbors()) {
           if (n!=null) {
             canvas.ellipse(n.getX() * sclX + sclX/2, n.getY() * sclY + sclY/2, 10, 10);
+            canvas.stroke(255, 0, 0);
+            canvas.strokeWeight(2);
+            canvas.line(nodes[y][x].getX() * sclX + sclX/2, nodes[y][x].getY() * sclY + sclY/2, n.getX() * sclX + sclX/2, n.getY() * sclY + sclY/2);
           }
         }
       }
@@ -61,9 +64,10 @@ class Board {
       if (previousVal < 0 && val >= 0) {
         addToNeighbors(x, y);
       }
-      if (val < 0)  //If it is a wall, delete it from it's neighbors array
+      if (val < 0) {  //If it is a wall, delete it from it's neighbors array
         deleteFromNeighbors(x, y);
-      nodes[x][y].resetNeighbors();
+        nodes[y][x].resetNeighbors();
+      }
     }
   }
 
@@ -76,21 +80,25 @@ class Board {
   }
 
   private void addToNeighbors(int x, int y) {
-    if (y > 0) {
+    if (y > 0 && nodes[y-1][x].getValue() >= 0) {
       nodes[y][x].addNeighbor(nodes[y-1][x]);
+      nodes[y-1][x].addNeighbor(nodes[y][x]);
     }
-    if (y < boardHeight-1) {
+    if (y < boardHeight-1 && nodes[y+1][x].getValue() >= 0) {
       nodes[y][x].addNeighbor(nodes[y+1][x]);
+      nodes[y+1][x].addNeighbor(nodes[y][x]);
     }
-    if (x > 0) {
+    if (x > 0 && nodes[y][x-1].getValue() >= 0) {
       nodes[y][x].addNeighbor(nodes[y][x-1]);
+      nodes[y][x-1].addNeighbor(nodes[y][x]);
     }
-    if (x < boardWidth-1) {
+    if (x < boardWidth-1 && nodes[y][x+1].getValue() >= 0) {
       nodes[y][x].addNeighbor(nodes[y][x+1]);
+      nodes[y][x+1].addNeighbor(nodes[y][x]);
     }
   }
 
-  public void setNeighbors(int x, int y, int val) {
+  public void setValueToNeighbors(int x, int y, int val) {
     if (y >= 0 && y < boardHeight && x >= 0 && x < boardWidth) {
       for (Node n : nodes[y][x].getNeighbors()) {
         if (n!=null) n.setValue(val);
